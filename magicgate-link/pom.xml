@@ -69,5 +69,14 @@
             <artifactId>commons-collections</artifactId>
         </dependency>
         <!-- Common Component End -->
+
+        <!-- Self Jar Start-->
+        <dependency>
+            <groupId>com.magicgate</groupId>
+            <artifactId>magicgate-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <!-- Self Jar End-->
+
     </dependencies>
 </project>
