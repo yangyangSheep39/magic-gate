@@ -27,7 +27,7 @@ public interface DashScopeChatService {
      *
      * @param request 对话参数
      *
-     * @return {@link String }
+     * @return {@link Flux }
      */
     Flux<ServerSentEvent<String>> chat(DialogueRequest request);
 }

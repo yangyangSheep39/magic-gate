@@ -32,20 +32,19 @@ public class DashScopeChatController {
     @GetMapping("/chat/single")
     public ResponseEntity<String> singleAnswer(@RequestBody DialogueRequest request) {
         String answer = dashScopeChatService.singleAnswer(request);
-        return ResponseEntity.ok("answer");
+        return ResponseEntity.ok(answer);
     }
 
 
     /**
      * 单轮对话接口
      *
-     * @param request
+     * @param request 对话参数
      *
-     * @return
+     * @return {@link Flux }
      */
     @PostMapping(path = "/chat", produces = MediaType.APPLICATION_JSON_VALUE)
     public Flux<ServerSentEvent<String>> chat(@RequestBody DialogueRequest request) {
-        dashScopeChatService.chat(request);
-        return null;
+        return dashScopeChatService.chat(request);
     }
 }
