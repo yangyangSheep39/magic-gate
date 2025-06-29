@@ -7,7 +7,7 @@ spring:
         # 禁用自动装配，使用手动装配的方式去构建一个ChatClient
         enabled: false
     dashscope:
-      api-key: sk-94ceac3079a54f68911f875500b3a3aa
+      api-key: test
       chat:
         client:
           # 禁用自动装配，使用手动装配的方式去构建一个ChatClient

@@ -22,21 +22,14 @@ public class DashScopeChatController {
     @Autowired
     DashScopeChatService dashScopeChatService;
 
-    /**
-     * 单轮对话接口
-     *
-     * @param request
-     *
-     * @return
-     */
+
     /**
      * 单论对话获取结果信息
      *
      * @param request 对话参数
      *
      * @return {@link String }
-     /
-
+     */
     @GetMapping("/chat/single")
     public ResponseEntity<String> singleAnswer(@RequestBody DialogueRequest request) {
         String answer = dashScopeChatService.singleAnswer(request);
