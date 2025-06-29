@@ -1,2 +1,21 @@
 server:
   port: 9999
+spring:
+  ai:
+    chat:
+      client:
+        # 禁用自动装配，使用手动装配的方式去构建一个ChatClient
+        enabled: false
+    dashscope:
+      api-key: sk-94ceac3079a54f68911f875500b3a3aa
+      chat:
+        client:
+          # 禁用自动装配，使用手动装配的方式去构建一个ChatClient
+          enabled: false
+
+# enabled debug log out.
+logging:
+  level:
+    org.springframework.ai: debug
+    com.alibaba.dashscope.api: debug
+    com.alibaba.cloud.ai.dashscope.chat: debug

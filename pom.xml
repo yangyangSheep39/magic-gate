@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.0</version>
+        <version>3.4.5</version>
         <relativePath/>
         <!-- lookup parent from repository -->
     </parent>
@@ -27,30 +27,29 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- Customised Start -->
         <lombok.version>1.18.38</lombok.version>
+        <spring.ai.version>1.0.0-M6</spring.ai.version>
         <spring.ai.alibaba.version>1.0.0.2</spring.ai.alibaba.version>
-        <spring.boot.version>3.5.0</spring.boot.version>
 
     </properties>
+
+
     <dependencyManagement>
         <dependencies>
             <!-- Spring & Spring AI & SpringAI Alibaba Start -->
-            <!--Spring Common-->
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-webflux</artifactId>
-                <version>${spring.boot.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-actuator</artifactId>
-                <version>${spring.boot.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-log4j2</artifactId>
-                <version>${spring.boot.version}</version>
-            </dependency>
+
             <!--AI-->
+            <dependency>
+                <groupId>org.springframework.ai</groupId>
+                <artifactId>spring-ai-bom</artifactId>
+                <version>${spring.ai.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.ai</groupId>
+                <artifactId>spring-ai-core</artifactId>
+                <version>${spring.ai.version}</version>
+            </dependency>
             <dependency>
                 <groupId>com.alibaba.cloud.ai</groupId>
                 <artifactId>spring-ai-alibaba-bom</artifactId>
@@ -59,17 +58,6 @@
                 <scope>import</scope>
             </dependency>
 
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter</artifactId>
-                <version>${spring.boot.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <artifactId>spring-boot-starter-logging</artifactId>
-                        <groupId>org.springframework.boot</groupId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
             <!-- Spring & Spring AI & SpringAI Alibaba End -->
 
 
@@ -113,5 +101,6 @@
 
         </dependencies>
     </dependencyManagement>
+
 
 </project>

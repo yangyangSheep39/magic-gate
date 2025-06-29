@@ -20,7 +20,10 @@
     <dependencies>
         <!-- Spring & Spring AI & SpringAI Alibaba Start -->
         <!--Spring Common-->
-
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux</artifactId>
@@ -38,8 +41,15 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                    <groupId>org.springframework.boot</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
-        <!--阿里巴巴灵积（DashScope）平台的Java SDK 可以选择注入openai zhipu azure 等等集成-->
+        <!--阿里巴巴灵积（DashScope）平台的Java SDK  已有百炼模型服务适配
+         可以选择注入openai zhipu azure 等等集成-->
         <dependency>
             <groupId>com.alibaba.cloud.ai</groupId>
             <artifactId>spring-ai-alibaba-starter-dashscope</artifactId>
