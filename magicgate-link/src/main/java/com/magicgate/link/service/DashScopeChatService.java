@@ -1,6 +1,8 @@
 package com.magicgate.link.service;
 
 import com.magicgate.common.request.DialogueRequest;
+import org.springframework.http.codec.ServerSentEvent;
+import reactor.core.publisher.Flux;
 
 /**
  * @Author yangyangsheep
@@ -17,4 +19,15 @@ public interface DashScopeChatService {
      * @return {@link String }
      */
     String singleAnswer(DialogueRequest request);
+
+
+
+    /**
+     * 多轮流式对话接口
+     *
+     * @param request 对话参数
+     *
+     * @return {@link String }
+     */
+    Flux<ServerSentEvent<String>> chat(DialogueRequest request);
 }

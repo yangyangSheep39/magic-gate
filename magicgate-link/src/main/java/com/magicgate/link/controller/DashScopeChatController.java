@@ -3,11 +3,10 @@ package com.magicgate.link.controller;
 import com.magicgate.common.request.DialogueRequest;
 import com.magicgate.link.service.DashScopeChatService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.codec.ServerSentEvent;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 
 /**
@@ -44,8 +43,8 @@ public class DashScopeChatController {
      *
      * @return
      */
-    @GetMapping("/chat")
-    public Flux<String> chat(@RequestBody DialogueRequest request) {
+    @PostMapping(path = "/chat", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Flux<ServerSentEvent<String>> chat(@RequestBody DialogueRequest request) {
         dashScopeChatService.chat(request);
         return null;
     }
