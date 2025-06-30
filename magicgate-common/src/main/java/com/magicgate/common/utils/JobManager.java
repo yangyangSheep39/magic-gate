@@ -19,6 +19,8 @@ import java.util.Objects;
  * @Author yangyangsheep
  * @Description 职责文件管理
  * @CreateTime 2025/6/29 01:12
+ * </br>
+ * <font color="red">后期使用Nacos动态配置管理</font>
  */
 @Component
 public class JobManager {
@@ -46,7 +48,7 @@ public class JobManager {
             String content = readJobFile(resource);
             jobDescriptions.put(Objects.requireNonNull(resource.getFilename()).replace(".job", ""), content);
         }
-        LOGGER.info("JobManager Initialization successful,Current Jobs Descriptions：{}", JSON.toJSONString(jobDescriptions.keySet()));
+        LOGGER.info("------------JobManager Initialization successful,Current Jobs Descriptions：{}------------", JSON.toJSONString(jobDescriptions.keySet()));
     }
 
     // 读取文件内容的方法

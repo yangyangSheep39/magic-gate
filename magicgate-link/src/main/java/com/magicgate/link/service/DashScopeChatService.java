@@ -21,7 +21,6 @@ public interface DashScopeChatService {
     String singleAnswer(DialogueRequest request);
 
 
-
     /**
      * 多轮流式对话接口
      *

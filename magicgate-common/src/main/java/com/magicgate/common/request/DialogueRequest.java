@@ -1,5 +1,6 @@
 package com.magicgate.common.request;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import org.springframework.ai.chat.messages.Message;
 
@@ -17,11 +18,14 @@ public class DialogueRequest {
      * <font color="red">对话模型设定参数 Start</font> </br>
      * 问题
      */
+    @NotBlank
     private String question;
-
 
     /** 指定model */
     private String model;
+
+    /** 指定一个系统提示词 */
+    private String promptName;
 
     /**
      * 温度 （严谨与想象）-越高想象力越丰富
