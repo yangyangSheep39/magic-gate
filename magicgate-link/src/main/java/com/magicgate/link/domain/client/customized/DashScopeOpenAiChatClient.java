@@ -9,11 +9,14 @@ import com.magicgate.link.domain.client.AbstractLLMChatClient;
 import com.magicgate.link.domain.client.LLMProviderProperties;
 import com.magicgate.link.domain.dto.Dialogue;
 import lombok.Getter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 
+import java.time.Duration;
 import java.util.List;
 
 /**
@@ -26,6 +29,7 @@ import java.util.List;
 @Component
 @Getter
 public class DashScopeOpenAiChatClient extends AbstractLLMChatClient {
+    private static final Logger LOGGER = LoggerFactory.getLogger(DashScopeOpenAiChatClient.class);
 
 
     protected DashScopeOpenAiChatClient(LLMProviderProperties providerProperties) {
@@ -44,11 +48,10 @@ public class DashScopeOpenAiChatClient extends AbstractLLMChatClient {
         ChatClient client = getClient(dialogue);
         String jobDescription = JobManager.getJobDescription(dialogue.getPromptName());
         //CallResponse是一个Spring Ai通用的返回模型
-        String content = client.prompt(jobDescription)
+        return client.prompt(jobDescription)
                 .advisors(SafeGuardAdvisor.builder().sensitiveWords(List.of("Fool")).build()) //这里可以使用增强处理，阶段大模型的返回并做一些对应的操作，比如用户输入敏感词的检测，可以在这里完成
                 .user(dialogue.getQuestion())
                 .call().content();
-        return "";
     }
 
     /**
@@ -60,21 +63,43 @@ public class DashScopeOpenAiChatClient extends AbstractLLMChatClient {
      */
     @Override
     public Flux<ServerSentEvent<String>> getChatClientByModelAndDoChat(Dialogue dialogue) {
-        return null;
+        ChatClient client = getClient(dialogue);
+        String jobDescription = JobManager.getJobDescription(dialogue.getPromptName());
+        //CallResponse是一个Spring Ai通用的返回模型
+        ChatClient.ChatClientRequestSpec doChat = client.prompt(jobDescription)
+                .advisors(SafeGuardAdvisor.builder().sensitiveWords(List.of("Fool")).build()) //这里可以使用增强处理，阶段大模型的返回并做一些对应的操作，比如用户输入敏感词的检测，可以在这里完成
+                .user(dialogue.getQuestion());
+        //以上为获取对话结果处理，以下为结果的自定义处理转换为标准的SSE流返回
+        //Tips!!!!!!!!!!!!!!!!!!!!!!!!!!!! content()是直接获取输出的文本，也就是对话的流文本，如果需要处理其他内容，可以获取chatClientResponse之后操作
+        return doChat.stream().content()
+                //缓冲分批处理（推荐，平衡性能与流式特性）
+                // 每收集 10个数据块 或 每过 100毫秒，就把收集到的数据块打包成一个 List<String> 发往下游，根据实际情况调整这两个参数
+                .bufferTimeout(10, Duration.ofMillis(100))
+                .map(list -> String.join("", list))
+                .map(res -> ServerSentEvent.<String>builder().data(res).build());
     }
 
     /**
-     * 获取当前的对话客户端
+     * 获取当前的对话客户端</br>
+     * spring ai 可以适配</br>
+     * -azure-openai</br>
+     * -core</br>
+     * -openai</br>
+     * -retry</br>
+     * -zhipuai</br>
      *
      * @param dialogue 对话参数
      *
-     * @return {@link ChatClient }
+     * @return {@link ChatClient } 标准Spring Ai 对话客户端
      */
     @Override
     protected ChatClient getClient(Dialogue dialogue) {
         LLMProviderProperties.ProviderConfig directConfig = getDirectConfig();
         //构建LLM接入鉴权参数以及地址
-        DashScopeApi dashScopeApi = DashScopeApi.builder().apiKey(directConfig.getApiKey()).baseUrl(directConfig.getBaseUrl()).build();
+        DashScopeApi dashScopeApi = DashScopeApi.builder()
+                .apiKey(directConfig.getApiKey())
+                .baseUrl(directConfig.getBaseUrl())
+                .build();
         DashScopeChatModel dashScopeChatModel = DashScopeChatModel.builder()
                 .dashScopeApi(dashScopeApi)
                 .defaultOptions(
@@ -88,7 +113,6 @@ public class DashScopeOpenAiChatClient extends AbstractLLMChatClient {
                 )
                 .build();
         return ChatClient.builder(dashScopeChatModel).build();
-
     }
 
     /**

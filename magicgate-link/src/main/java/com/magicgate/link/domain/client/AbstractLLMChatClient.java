@@ -43,17 +43,17 @@ public abstract class AbstractLLMChatClient {
     public abstract Flux<ServerSentEvent<String>> getChatClientByModelAndDoChat(Dialogue dialogue);
 
     /**
-     * 获取当前的对话客户端
-     * spring ai 可以适配
-     * spring-ai--azure-openai
-     * -core
-     * -openai
-     * -retry
-     * -zhipuai
+     * 获取当前的对话客户端</br>
+     * spring ai 可以适配</br>
+     *      -azure-openai</br>
+     *      -core</br>
+     *      -openai</br>
+     *      -retry</br>
+     *      -zhipuai</br>
      *
      * @param dialogue 对话参数
      *
-     * @return {@link ChatClient }
+     * @return {@link ChatClient } 标准Spring Ai 对话客户端
      */
     protected abstract ChatClient getClient(Dialogue dialogue);
 

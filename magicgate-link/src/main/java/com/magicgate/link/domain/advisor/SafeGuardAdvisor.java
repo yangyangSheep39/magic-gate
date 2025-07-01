@@ -105,7 +105,7 @@ public class SafeGuardAdvisor implements CallAdvisor, StreamAdvisor {
 
     public static final class Builder {
         private List<String> sensitiveWords;
-        private String failureResponse = "I'm unable to respond to that due to sensitive content. Could we rephrase or discuss something else?";
+        private String failureResponse = "I'm unable to respond to that due to sensitive content. Could we rephrase or discuss something else?（我不能够回答这个问题，因为其中包含非法内容）";
         private int order = 0;
 
         private Builder() {

@@ -103,11 +103,17 @@ public class DashScopeSdkChatClient extends AbstractLLMChatClient {
     }
 
     /**
-     * 获取当前的对话客户端
+     * 获取当前的对话客户端</br>
+     * spring ai 可以适配</br>
+     * -azure-openai</br>
+     * -core</br>
+     * -openai</br>
+     * -retry</br>
+     * -zhipuai</br>
      *
      * @param dialogue 对话参数
      *
-     * @return {@link ChatClient }
+     * @return {@link ChatClient } 标准Spring Ai 对话客户端
      */
     @Override
     protected ChatClient getClient(Dialogue dialogue) {
