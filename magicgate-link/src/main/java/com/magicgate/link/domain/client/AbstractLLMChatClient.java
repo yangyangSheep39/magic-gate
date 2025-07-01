@@ -50,18 +50,13 @@ public abstract class AbstractLLMChatClient {
      * -openai
      * -retry
      * -zhipuai
+     *
      * @param dialogue 对话参数
      *
      * @return {@link ChatClient }
      */
     protected abstract ChatClient getClient(Dialogue dialogue);
 
-    /**
-     * 获取支持的模型
-     *
-     * @return {@link List }<{@link String }>
-     */
-    public abstract List<String> getSupportedModels();
 
     /**
      * 获取Bean指定的配置项
@@ -69,4 +64,15 @@ public abstract class AbstractLLMChatClient {
      * @return {@link LLMProviderProperties.ProviderConfig }
      */
     protected abstract LLMProviderProperties.ProviderConfig getDirectConfig();
+
+    /**
+     * 获取支持的模型
+     *
+     * @return {@link List }<{@link String }>
+     */
+    public List<String> getSupportedModels() {
+        LLMProviderProperties.ProviderConfig directConfig = getDirectConfig();
+        return directConfig.getModels();
+    }
+
 }
