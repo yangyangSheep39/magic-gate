@@ -20,6 +20,14 @@ public class LLMChatClientFactory {
         this.clients = clients;
     }
 
+
+    /**
+     * 通过指定的模型获取相应的对话客户端Bean
+     *
+     * @param model 模型名称
+     *
+     * @return {@link AbstractLLMChatClient }
+     */
     public AbstractLLMChatClient getClientByModel(String model) {
         for (AbstractLLMChatClient client : clients) {
             if (client.getSupportedModels().contains(model)) {
