@@ -1,16 +1,16 @@
 package com.magicgate.link.controller;
 
-import com.alibaba.dashscope.aigc.generation.Generation;
-import com.alibaba.dashscope.aigc.generation.GenerationParam;
-import com.alibaba.dashscope.aigc.generation.GenerationResult;
-import com.alibaba.dashscope.common.Message;
-import com.alibaba.dashscope.common.Role;
-import com.alibaba.dashscope.exception.ApiException;
-import com.alibaba.dashscope.exception.InputRequiredException;
-import com.alibaba.dashscope.exception.NoApiKeyException;
+//import com.alibaba.dashscope.aigc.generation.Generation;
+//import com.alibaba.dashscope.aigc.generation.GenerationParam;
+//import com.alibaba.dashscope.aigc.generation.GenerationResult;
+//import com.alibaba.dashscope.common.Message;
+//import com.alibaba.dashscope.common.Role;
+//import com.alibaba.dashscope.exception.ApiException;
+//import com.alibaba.dashscope.exception.InputRequiredException;
+//import com.alibaba.dashscope.exception.NoApiKeyException;
 import com.magicgate.common.request.DialogueRequest;
 import com.magicgate.link.service.DashScopeChatService;
-import io.reactivex.Flowable;
+//import io.reactivex.Flowable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

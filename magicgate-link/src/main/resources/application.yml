@@ -1,28 +1,17 @@
 server:
   port: 9999
 spring:
+  application:
+    name: magic-link
+  main:
+    allow-bean-definition-overriding: true
   ai:
     chat:
       client:
-        # 禁用自动装配，使用手动装配的方式去构建一个ChatClient
+        # 如果这里是true的话，spring可以自动注入ChatClient，单模型很方便，多模型的话不建议 如果注入了openai zhipu等其他模型需要每一个都做好装配或者关闭自动装配
         enabled: false
     dashscope:
-      api-key: test
-      chat:
-        client:
-          # 禁用自动装配，使用手动装配的方式去构建一个ChatClient
-          enabled: false
-    openai:
-      api-key: sfafffffffffffffffffffafsaf
-      audio:
-        speech:
-          enabled: false
-      chat:
-        enabled: false
-      embedding:
-        enabled: false
-      image:
-        enabled: false
+      api-key: -----------------
 
 # enabled debug log out.
 logging:
@@ -36,16 +25,16 @@ logging:
 llm:
   providers:
     dashscope:
-      api-key: sk-94ceac3079a54f68911f875500b3a3aa
+      api-key: -----------------
       base-url: https://dashscope.aliyuncs.com/compatible-mode/v1
       models:
-        - qwq-plus
-        - qwq-plus-latest
         - qwen-plus
         - qwen-7b
         - qwen-14b-chat
     dashscope-openai:
-      api-key: sk-94ceac3079a54f68911f875500b3a3aa
-      base-url: https://dashscope.aliyuncs.com/compatible-mode/v1
+      api-key: -----------------
+      base-url: https://dashscope.aliyuncs.com
       models:
-        - qwen-max
+        - qwq-plus
+        - qwq-plus-latest
+        - qwen-turbo

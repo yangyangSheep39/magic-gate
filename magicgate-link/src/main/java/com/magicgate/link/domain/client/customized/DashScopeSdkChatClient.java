@@ -1,5 +1,6 @@
 package com.magicgate.link.domain.client.customized;
 
+
 import com.alibaba.dashscope.aigc.generation.Generation;
 import com.alibaba.dashscope.aigc.generation.GenerationParam;
 import com.alibaba.dashscope.aigc.generation.GenerationResult;
@@ -21,7 +22,6 @@ import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * @Author yangyangsheep
@@ -29,11 +29,11 @@ import java.util.List;
  * @CreateTime 2025/6/29 23:50
  */
 @Component
-public class DashScopeChatClient extends AbstractLLMChatClient {
-    private static final Logger LOGGER = LoggerFactory.getLogger(DashScopeChatClient.class);
+public class DashScopeSdkChatClient extends AbstractLLMChatClient {
+    private static final Logger LOGGER = LoggerFactory.getLogger(DashScopeSdkChatClient.class);
 
 
-    protected DashScopeChatClient(LLMProviderProperties providerProperties) {
+    protected DashScopeSdkChatClient(LLMProviderProperties providerProperties) {
         super(providerProperties);
     }
 
@@ -47,14 +47,18 @@ public class DashScopeChatClient extends AbstractLLMChatClient {
     @Override
     public String getChatClientByModelAndDoAnswer(Dialogue dialogue) {
         LLMProviderProperties.ProviderConfig directConfig = getDirectConfig();
+        //构建对话参数模型
         Generation gen = new Generation();
         String jobDescription = JobManager.getJobDescription(dialogue.getPromptName());
         Message systemMsg = Message.builder().role(Role.SYSTEM.getValue()).content(jobDescription).build();
         Message userMsg = Message.builder().role(Role.USER.getValue()).content(dialogue.getQuestion()).build();
-        GenerationParam param = GenerationParam.builder()
-                .apiKey(directConfig.getApiKey())
-                // 此处以qwen-plus为例，可按需更换模型名称。模型列表：https://help.aliyun.com/zh/model-studio/getting-started/models
-                .model(dialogue.getModel()).messages(Arrays.asList(systemMsg, userMsg)).resultFormat(GenerationParam.ResultFormat.MESSAGE).build();
+        GenerationParam param = GenerationParam.builder().apiKey(directConfig.getApiKey())
+                //可替换其他模型
+                .model(dialogue.getModel())
+                //组装输入
+                .messages(Arrays.asList(systemMsg, userMsg))
+                //格式化结果的类型
+                .resultFormat(GenerationParam.ResultFormat.MESSAGE).build();
         try {
             GenerationResult call = gen.call(param);
             return JSON.toJSONString(call);
@@ -78,7 +82,6 @@ public class DashScopeChatClient extends AbstractLLMChatClient {
         Message systemMsg = Message.builder().role(Role.SYSTEM.getValue()).content(jobDescription).build();
         Message userMsg = Message.builder().role(Role.USER.getValue()).content(dialogue.getQuestion()).build();
         GenerationParam param = GenerationParam.builder()
-                // 若没有配置环境变量，请用阿里云百炼API Key将下行替换为：.apiKey("sk-xxx")
                 .apiKey(directConfig.getApiKey())
                 .model(dialogue.getModel())
                 .messages(Arrays.asList(systemMsg, userMsg))
@@ -90,13 +93,10 @@ public class DashScopeChatClient extends AbstractLLMChatClient {
                 .build();
         try {
             //转换为标准的SSE流返回
-            return Flux.from(gen.streamCall(param))
-                    .map(data -> {
-                        LOGGER.info("streamOutut:{}", JSON.toJSONString(data));
-                        return ServerSentEvent.<String>builder()
-                                .data(data.getOutput().getChoices().get(0).getMessage().getContent())
-                                .build();
-                    });
+            return Flux.from(gen.streamCall(param)).map(data -> {
+                LOGGER.info("streamOutut:{}", JSON.toJSONString(data));
+                return ServerSentEvent.<String>builder().data(data.getOutput().getChoices().get(0).getMessage().getContent()).build();
+            });
         } catch (NoApiKeyException | InputRequiredException e) {
             throw new LLMChatException("LLM Chat Error: " + e.getMessage());
         }
@@ -113,17 +113,6 @@ public class DashScopeChatClient extends AbstractLLMChatClient {
     protected ChatClient getClient(Dialogue dialogue) {
         //SDK 的调用方式不适用于ChatClient
         return null;
-    }
-
-    /**
-     * 获取支持的模型
-     *
-     * @return {@link List }<{@link String }>
-     */
-    @Override
-    public List<String> getSupportedModels() {
-        LLMProviderProperties.ProviderConfig directConfig = getDirectConfig();
-        return directConfig.getModels();
     }
 
     /**
