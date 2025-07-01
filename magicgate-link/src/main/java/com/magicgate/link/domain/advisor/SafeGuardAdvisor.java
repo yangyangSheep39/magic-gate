@@ -86,7 +86,7 @@ public class SafeGuardAdvisor implements CallAdvisor, StreamAdvisor {
         return new Builder();
     }
 
-
+    @Override
     public ChatClientResponse adviseCall(ChatClientRequest chatClientRequest, CallAdvisorChain callAdvisorChain) {
         return !CollectionUtils.isEmpty(this.sensitiveWords) && this.sensitiveWords.stream()
                 .anyMatch((w) -> chatClientRequest.prompt()
