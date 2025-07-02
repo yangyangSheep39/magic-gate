@@ -3,6 +3,7 @@ package com.magicgate.link.domain.client;
 import com.magicgate.link.domain.dto.Dialogue;
 import lombok.Getter;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.advisor.api.Advisor;
 import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
@@ -28,28 +29,30 @@ public abstract class AbstractLLMChatClient {
      * 单轮对话文本生成
      *
      * @param dialogue 对话参数
+     * @param advisors 可变参数的增强器列表
      *
      * @return {@link String } 生成的文本
      */
-    public abstract String getChatClientByModelAndDoAnswer(Dialogue dialogue);
+    public abstract String getChatClientByModelAndDoAnswer(Dialogue dialogue, Advisor... advisors);
 
     /**
      * 多轮对话
      *
      * @param dialogue 对话参数
+     * @param advisors 可变参数的增强器列表
      *
      * @return {@link Flux }<{@link ServerSentEvent }<{@link String }>>
      */
-    public abstract Flux<ServerSentEvent<String>> getChatClientByModelAndDoChat(Dialogue dialogue);
+    public abstract Flux<ServerSentEvent<String>> getChatClientByModelAndDoChat(Dialogue dialogue, Advisor... advisors);
 
     /**
      * 获取当前的对话客户端</br>
      * spring ai 可以适配</br>
-     *      -azure-openai</br>
-     *      -core</br>
-     *      -openai</br>
-     *      -retry</br>
-     *      -zhipuai</br>
+     * -azure-openai</br>
+     * -core</br>
+     * -openai</br>
+     * -retry</br>
+     * -zhipuai</br>
      *
      * @param dialogue 对话参数
      *

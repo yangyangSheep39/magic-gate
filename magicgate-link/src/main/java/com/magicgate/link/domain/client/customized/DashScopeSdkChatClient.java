@@ -17,6 +17,7 @@ import com.magicgate.link.exception.LLMChatException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.advisor.api.Advisor;
 import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
@@ -41,11 +42,12 @@ public class DashScopeSdkChatClient extends AbstractLLMChatClient {
      * 单轮对话文本生成
      *
      * @param dialogue 对话参数
+     * @param advisors 可变参数的增强器列表
      *
      * @return {@link String } 生成的文本
      */
     @Override
-    public String getChatClientByModelAndDoAnswer(Dialogue dialogue) {
+    public String getChatClientByModelAndDoAnswer(Dialogue dialogue, Advisor... advisors) {
         LLMProviderProperties.ProviderConfig directConfig = getDirectConfig();
         //构建对话参数模型
         Generation gen = new Generation();
@@ -71,11 +73,12 @@ public class DashScopeSdkChatClient extends AbstractLLMChatClient {
      * 多轮对话
      *
      * @param dialogue 对话参数
+     * @param advisors 可变参数的增强器列表
      *
      * @return {@link Flux }<{@link ServerSentEvent }<{@link String }>>
      */
     @Override
-    public Flux<ServerSentEvent<String>> getChatClientByModelAndDoChat(Dialogue dialogue) {
+    public Flux<ServerSentEvent<String>> getChatClientByModelAndDoChat(Dialogue dialogue, Advisor... advisors) {
         LLMProviderProperties.ProviderConfig directConfig = getDirectConfig();
         Generation gen = new Generation();
         String jobDescription = JobManager.getJobDescription(dialogue.getPromptName());

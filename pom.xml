@@ -18,6 +18,7 @@
     <modules>
         <module>magicgate-common</module>
         <module>magicgate-link</module>
+        <module>magicgate-rag</module>
     </modules>
 
 

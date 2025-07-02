@@ -1,8 +1,11 @@
 package com.magicgate.link.domain.client.customized;
 
+import com.alibaba.cloud.ai.advisor.DocumentRetrievalAdvisor;
 import com.alibaba.cloud.ai.dashscope.api.DashScopeApi;
 import com.alibaba.cloud.ai.dashscope.chat.DashScopeChatModel;
 import com.alibaba.cloud.ai.dashscope.chat.DashScopeChatOptions;
+import com.alibaba.cloud.ai.dashscope.rag.DashScopeDocumentRetriever;
+import com.alibaba.cloud.ai.dashscope.rag.DashScopeDocumentRetrieverOptions;
 import com.magicgate.common.utils.JobManager;
 import com.magicgate.link.domain.advisor.SafeGuardAdvisor;
 import com.magicgate.link.domain.client.AbstractLLMChatClient;
@@ -12,6 +15,8 @@ import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.advisor.api.Advisor;
+import org.springframework.ai.rag.retrieval.search.DocumentRetriever;
 import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
@@ -40,11 +45,12 @@ public class DashScopeOpenAiChatClient extends AbstractLLMChatClient {
      * 单轮对话文本生成
      *
      * @param dialogue 对话参数
+     * @param advisors 可变参数的增强器列表
      *
      * @return {@link String } 生成的文本
      */
     @Override
-    public String getChatClientByModelAndDoAnswer(Dialogue dialogue) {
+    public String getChatClientByModelAndDoAnswer(Dialogue dialogue, Advisor... advisors) {
         ChatClient client = getClient(dialogue);
         String jobDescription = JobManager.getJobDescription(dialogue.getPromptName());
         //CallResponse是一个Spring Ai通用的返回模型
@@ -58,11 +64,12 @@ public class DashScopeOpenAiChatClient extends AbstractLLMChatClient {
      * 多轮对话
      *
      * @param dialogue 对话参数
+     * @param advisors 可变参数的增强器列表
      *
      * @return {@link Flux }<{@link ServerSentEvent }<{@link String }>>
      */
     @Override
-    public Flux<ServerSentEvent<String>> getChatClientByModelAndDoChat(Dialogue dialogue) {
+    public Flux<ServerSentEvent<String>> getChatClientByModelAndDoChat(Dialogue dialogue, Advisor... advisors) {
         ChatClient client = getClient(dialogue);
         String jobDescription = JobManager.getJobDescription(dialogue.getPromptName());
         //CallResponse是一个Spring Ai通用的返回模型
@@ -100,6 +107,11 @@ public class DashScopeOpenAiChatClient extends AbstractLLMChatClient {
                 .apiKey(directConfig.getApiKey())
                 .baseUrl(directConfig.getBaseUrl())
                 .build();
+
+
+        DocumentRetriever retriever = new DashScopeDocumentRetriever(dashScopeApi,
+                DashScopeDocumentRetrieverOptions.builder().withIndexName("demo测试企业知识库").build());
+
         DashScopeChatModel dashScopeChatModel = DashScopeChatModel.builder()
                 .dashScopeApi(dashScopeApi)
                 .defaultOptions(
@@ -112,7 +124,8 @@ public class DashScopeOpenAiChatClient extends AbstractLLMChatClient {
                                 .build()
                 )
                 .build();
-        return ChatClient.builder(dashScopeChatModel).build();
+        //在这里可以直接做知识库的注入，知识库的管理可以放在另一个模块去处理
+        return ChatClient.builder(dashScopeChatModel).defaultAdvisors(new DocumentRetrievalAdvisor(retriever)).build();
     }
 
     /**
