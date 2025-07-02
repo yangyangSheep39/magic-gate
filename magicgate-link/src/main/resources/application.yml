@@ -1,10 +1,14 @@
 server:
   port: 9999
+
 spring:
   application:
     name: magic-link
-  main:
-    allow-bean-definition-overriding: true
+  mvc:
+    async:
+      # 这是非常关键的时间配置，负责大模型调用时间长了之后会直接抛出IOException
+      request-timeout: 60s # 异步请求超时时间（毫秒）
+
   ai:
     chat:
       client:
@@ -12,6 +16,8 @@ spring:
         enabled: false
     dashscope:
       api-key: -----------------
+      chat:
+        enabled: false
 
 # enabled debug log out.
 logging:

@@ -49,7 +49,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<String> handleRuntimeException(RuntimeException ex) {
         log.error("RuntimeException occurred: ", ex);
-        return new ResponseEntity<>("Internal Server Error: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>("Server Error: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     /**
@@ -59,7 +59,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<String> handleException(Exception ex) {
         log.error("Exception occurred: ", ex);
-        return new ResponseEntity<>("Internal Server Error: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>("Server Error: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     /**
@@ -76,10 +76,10 @@ public class GlobalExceptionHandler {
             // 对于流式响应，返回一个只包含错误对象的 Flux，然后结束流
             // 前端 SSE 客户端会收到一个事件，然后连接关闭
             log.info("方法 【{}】 的返回类型为 Flux，返回包含错误信息的单个事件。", handlerMethod.getMethod().getName());
-            Flux<ServerSentEvent<String>> just = Flux.just(
+            return Flux.just(
                     ServerSentEvent.<String>builder().data(ex.getMessage()).build()
             );
-            return FluxUtils.buildReturn(just);
+            //return FluxUtils.buildReturn(just);
         }
 
         // 2. 如果方法返回的是 ResponseEntity (例如 vision 接口)
