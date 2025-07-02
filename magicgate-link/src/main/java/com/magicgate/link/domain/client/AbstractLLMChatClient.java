@@ -1,6 +1,6 @@
 package com.magicgate.link.domain.client;
 
-import com.magicgate.link.domain.dto.Dialogue;
+import com.magicgate.link.domain.model.Dialogue;
 import lombok.Getter;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.api.Advisor;

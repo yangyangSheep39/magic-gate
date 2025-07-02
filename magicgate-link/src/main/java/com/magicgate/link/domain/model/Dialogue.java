@@ -1,4 +1,4 @@
-package com.magicgate.link.domain.dto;
+package com.magicgate.link.domain.model;
 
 import com.magicgate.common.request.DialogueHistoryRequest;
 import lombok.Getter;

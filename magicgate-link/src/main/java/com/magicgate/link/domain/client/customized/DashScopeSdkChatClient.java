@@ -12,7 +12,7 @@ import com.alibaba.fastjson2.JSON;
 import com.magicgate.common.utils.JobManager;
 import com.magicgate.link.domain.client.AbstractLLMChatClient;
 import com.magicgate.link.domain.client.LLMProviderProperties;
-import com.magicgate.link.domain.dto.Dialogue;
+import com.magicgate.link.domain.model.Dialogue;
 import com.magicgate.link.exception.LLMChatException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

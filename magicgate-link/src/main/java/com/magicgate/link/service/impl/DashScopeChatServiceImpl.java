@@ -4,7 +4,7 @@ import com.magicgate.common.request.DialogueRequest;
 import com.magicgate.common.utils.BeanCopyUtils;
 import com.magicgate.link.domain.client.AbstractLLMChatClient;
 import com.magicgate.link.domain.client.LLMChatClientFactory;
-import com.magicgate.link.domain.dto.Dialogue;
+import com.magicgate.link.domain.model.Dialogue;
 import com.magicgate.link.service.DashScopeChatService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;

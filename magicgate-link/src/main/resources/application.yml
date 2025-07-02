@@ -32,14 +32,14 @@ logging:
 llm:
   providers:
     dashscope:
-      api-key: sk-94ceac3079a54f68911f875500b3a3aa
+      api-key: -----------------------------
       base-url: https://dashscope.aliyuncs.com/compatible-mode/v1
       models:
         - qwen-plus
         - qwen-7b
         - qwen-14b-chat
     dashscope-openai:
-      api-key: sk-94ceac3079a54f68911f875500b3a3aa
+      api-key: -----------------------------
       base-url: https://dashscope.aliyuncs.com
       models:
         - qwq-plus

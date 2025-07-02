@@ -1,4 +1,4 @@
-package com.magicgate.link.infrastructure.impl;
+package com.magicgate.link.infrastructure.integration.impl;
 
 import org.springframework.stereotype.Component;
 

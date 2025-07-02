@@ -1,4 +1,4 @@
-package com.magicgate.link.infrastructure;
+package com.magicgate.link.infrastructure.integration;
 
 /**
  * @Author yangyangsheep
