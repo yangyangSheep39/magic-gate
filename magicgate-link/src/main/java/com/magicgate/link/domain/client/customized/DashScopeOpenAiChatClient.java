@@ -106,6 +106,7 @@ public class DashScopeOpenAiChatClient extends AbstractLLMChatClient {
         DashScopeApi dashScopeApi = DashScopeApi.builder()
                 .apiKey(directConfig.getApiKey())
                 .baseUrl(directConfig.getBaseUrl())
+                .workSpaceId("llm-vie3wwctzt25zpie")
                 .build();
 
 
