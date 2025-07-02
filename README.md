@@ -11,7 +11,7 @@
 > <font color="red">代码实现中也有大量的注释说明,对于调用参数进行详细解释,或详细说明可以如何实现,请留意关注这些信息</font>
 
 ## 关键依赖版本管理
-> 调整关键依赖版本的时候,请参照官方文档的版本管理进行配置,随意更换版本后可能会引发依赖冲突</br>
+> <font color="red">调整关键依赖版本的时候,请参照官方文档的版本管理进行配置,随意更换版本后可能会引发依赖冲突</font></br>
 > 相关文档链接：</br>
 >   1.[Spring Ai Alibaba](https://java2ai.com/?spm=4347728f.53ae79f1.0.0.6bd6362btbu3eW)</br>
 >   2.[Spring Ai](https://docs.spring.io/spring-ai/reference/1.1-SNAPSHOT/index.html)</br>
